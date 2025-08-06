@@ -13,6 +13,13 @@ func TokenAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 			http.Error(w, "Forbidden", http.StatusForbidden)
 			return
 		}
+		token := r.Header.Get("Authorization")
+		if isValidToken(clientProfile, token) {
+			http.Error(w, "Forbidden", http.StatusForbidden)
+			return
+		}
+
+		next.ServeHTTP(w, r)
 	}
 }
 
