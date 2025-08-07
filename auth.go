@@ -1,6 +1,7 @@
 package main
 
 import (
+	c "context"
 	"net/http"
 	"strings"
 )
@@ -19,6 +20,8 @@ func TokenAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
+		ctx := c.WithValue(r.Context(), "clientProfile", clientProfile)
+		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
 	}
 }
